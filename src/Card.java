@@ -1,7 +1,7 @@
 
 /*  - Here we have an object used to represent a single card.
     - Contains information about the card.
-    - Records whether or not the card has been played.
+    - Records whether or not the card has been played. (maybe)
  */
 
 

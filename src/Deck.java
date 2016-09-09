@@ -6,13 +6,16 @@
 
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Deck {
 
-    private int numCards = 0;
     private ArrayList<Card> deckList = new ArrayList();
 
+
+
     // Constructor ->
+
     public Deck() {
 
 
@@ -22,33 +25,45 @@ public class Deck {
 
     public void shuffleDeck() {
 
+        int i;
+        int n = deckList.size();
 
+        for (i = 0; i < (n - 1); i++) {
 
+            Random rand = new Random();
+
+            int j = rand.nextInt(n - 1) + i;
+
+            Card iIndex = deckList.remove(i);
+            Card jIndex = deckList.remove(j);
+
+            deckList.add(i, jIndex);
+            deckList.add(j, iIndex);
+
+        }
 
     }
+
+
 
 
     // Accessors ->
-    public int getNumCards() {
-        return numCards;
-    }
 
     public Card getNextCard() {
 
-        if(deckList.size() != 0) {
-            this.numCards--;
-            return deckList.remove(0);
-        } else {
-            return null;
-        }
+        return deckList.remove(0);
     }
+
 
     public void addCard(Card card) {
 
-        if (deckList.size() < 54) {
             deckList.add(card);
-            this.numCards++;
-        }
+    }
+
+
+    public int size() {
+
+        return deckList.size();
     }
 
 

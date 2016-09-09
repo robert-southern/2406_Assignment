@@ -1,50 +1,33 @@
-import com.sun.xml.internal.txw2.Document;
-import org.w3c.dom.NodeList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
 import java.util.ArrayList;
-
-
+import java.util.Scanner;
 
 public class Main {
 
-    ArrayList deck = new ArrayList();
-
     public static void main(String[] args) {
 
-        try {
-            //File deckList = new File("DeckList.xml");
+        int numPlayers = 0;
 
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        Scanner in = new Scanner(System.in);
 
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-
-            org.w3c.dom.Document document = documentBuilder.parse(new File("DeckList.xml"));
-
-            // normalise text representation:
-            document.getDocumentElement().normalize();
-            System.out.println("Root: " + document.getDocumentElement().getNodeName());
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        while(numPlayers < 3 || numPlayers > 5) {
+            System.out.print("Enter the number of players: ");
+            numPlayers = Integer.parseInt(in.nextLine());
+            if (numPlayers < 3 || numPlayers > 5) {
+                System.out.println("Not valid! Must be 3 to 5 players!");
+            }
         }
 
+        Game game = new Game(numPlayers);
 
 
-        //still in main
+        game.play();
 
 
-        ArrayList a = new ArrayList();
-
-        System.out.println(a.size());
 
 
     }
 
 
-
-
 }
+
+
