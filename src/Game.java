@@ -5,13 +5,12 @@ public class Game {
 
     private int numberOfPlayers;
 
-    Player players[] = new Player[numberOfPlayers];
+    Player[] players = new Player[numberOfPlayers];
 
 
     public Game() {
 
     }
-
 
     public Game(int numberOfPlayers) {
 
