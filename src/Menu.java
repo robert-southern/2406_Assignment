@@ -12,10 +12,11 @@ public class Menu {
 
         Scanner in = new Scanner(System.in);
 
-        System.out.println("----- Menu -----\n" +
+        System.out.println("------ Menu ------\n" +
                 "1. Play\n" +
                 "2. Rules\n" +
                 "3. Exit");
+        System.out.println("------------------");
 
         System.out.print("Enter menu item number: ");
         while (!in.hasNextInt()) {
@@ -41,7 +42,7 @@ public class Menu {
     private void displayRules() {
 
         System.out.println(" ");
-        System.out.println("----- Rules -----\n" +
+        System.out.println("------ Rules ------\n" +
                 ">> 1. Play a card and select a category.\n" +
                 ">> 2. Player to the left must play a card with a higher value in the selected category\n" +
                 ">> 3. When the next player can't play, he picks up a card from the deck and passes his turn.\n" +
@@ -54,6 +55,7 @@ public class Menu {
                 "      next round and chooses the next trump category.\n" +
                 ">> 8. The Winner of the game is the first player to lose all of their cards.\n" +
                 ">> 9. The game continues until all but one player (the loser) has lost their cards.");
+        System.out.println(" ");
     }
 
     public boolean isChoosePlay() {
