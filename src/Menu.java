@@ -35,6 +35,8 @@ public class Menu {
                 displayMenu();
                 break;
             case 3:
+                System.out.println("");
+                System.out.println("Exiting...");
                 System.exit(0);
         }
     }

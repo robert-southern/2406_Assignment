@@ -5,10 +5,8 @@
  */
 
 
-
 public class Card {
 
-    // Attributes ->
     private String name;
     private double hardness;
     private double specificGravity;
@@ -18,8 +16,6 @@ public class Card {
     private boolean wasPlayed = false;
 
 
-
-    // Constructors ->
     public Card() {
 
     }
@@ -32,11 +28,8 @@ public class Card {
         this.abundance = abundance;
         this.econValue = econValue;
     }
-    // -----------------------------------------------------------------------------------------------------------------
 
 
-
-    // Getters & Setters ->
     public String getName() {
         return name;
     }

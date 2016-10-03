@@ -3,10 +3,10 @@ import java.util.Random;
 public class Game {
 
     private boolean gameIsOver = false;
-
     private int numberOfPlayers;
-
     private Player[] players;
+    private Deck gameDeck;
+
 
 
     public Game(int numberOfPlayers) {
@@ -15,12 +15,17 @@ public class Game {
         this.players = new Player[numberOfPlayers];
     }
 
-    public void play() {
+    public void initialise(String fileName) {
+
+        for (int i = 0; i < numberOfPlayers; i++) {
+            this.players[i] = new Player();
+        }
 
         pickHuman();
         pickDealer();
         setNamesAndDisplay();
-
+        DeckBuilder deckBuilder = new DeckBuilder();
+        this.gameDeck = deckBuilder.BuildDeck(fileName);
 
 
     }
@@ -38,30 +43,44 @@ public class Game {
     public void setNamesAndDisplay() {
 
         StringBuffer playersList = new StringBuffer();
+        int aiCount = 1;
 
         for (int i = 0; i < players.length; i++) {
 
             if (!players[i].getName().equals("Player")) {
                 if (players[i].isDealer()) {
-                    players[i].setName("AI " + (i + 1) + "(dealer)");
+                    players[i].setName("AI " + (aiCount));
+                    players[i].setTempName("AI " + (aiCount) + "(dealer)");
+                    aiCount++;
                 }
                 else {
-                    players[i].setName("AI " + (i + 1));
+                    players[i].setName("AI " + (aiCount));
+                    players[i].setTempName("AI " + (aiCount));
+                    aiCount++;
                 }
             }
             else {
                 if(players[i].isDealer()) {
-                    players[i].setName("Player(dealer)");
+                    players[i].setName("Player");
+                    players[i].setTempName("Player(dealer)");
                 }
             }
 
-            if (!Character.isSpaceChar(playersList.charAt(playersList.length()))) {
-                playersList.append(players[i].getName() + " -> ");
-            }
+//            if (!Character.isSpaceChar(playersList.charAt(playersList.length() - 1))) {
+//                playersList.append(players[i].getName() + " -> ");
+//            }
+
+            playersList.append(players[i].getTempName() + " -> ");
+
         }
-        System.out.print("Playing:    ");
-        System.out.print(playersList);
+
+        playersList.delete(playersList.length() - 3, playersList.length() - 1);
+        System.out.println("----------------------------------------------------------------");
+        System.out.print("Play Order:    ");
+        System.out.print(playersList + "\n");
+        System.out.println("----------------------------------------------------------------");
     }
+
 
     public boolean isGameIsOver() {
         return gameIsOver;
@@ -71,6 +90,7 @@ public class Game {
         this.gameIsOver = gameIsOver;
     }
 
-
-
+    public Player[] getPlayers() {
+        return players;
+    }
 }

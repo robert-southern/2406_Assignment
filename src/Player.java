@@ -4,10 +4,11 @@ public class Player {
 
     private boolean dealer = false;
     private boolean human = false;
-    private String name;
+    private String name = "";
+    private String tempName = "";
+    private ArrayList<Card> hand = new ArrayList();
 
     public Player() {
-
 
     }
 
@@ -31,10 +32,20 @@ public class Player {
         return human;
     }
 
-    public void setHuman(boolean human) {
-        this.human = human;
+    public void setHuman(boolean val) {
+        this.human = val;
         if (this.human == true) {
             this.name = "Player";
+            this.tempName = "Player";
         }
+
+    }
+
+    public String getTempName() {
+        return tempName;
+    }
+
+    public void setTempName(String tempName) {
+        this.tempName = tempName;
     }
 }

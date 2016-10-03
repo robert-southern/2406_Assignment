@@ -1,64 +1,71 @@
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
+import java.util.ArrayList;
+
+// Reader will return an array containing the contents of the csv file in line by line format.
 
 public interface Reader {
 
-    void readFile(String filename);
-
+    ArrayList readFile(String fileName);
 
 }
 
 
-class XMLReader implements Reader {
-
-    public void readFile(String filename) {
-
-        try {
-            //File deckList = new File("DeckList.xml");
-
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-
-            org.w3c.dom.Document document = documentBuilder.parse(new File("DeckList.xml"));
-
-            // normalise text representation:
-            document.getDocumentElement().normalize();
-            System.out.println("Root: " + document.getDocumentElement().getNodeName());
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-}
+//class XMLReader implements Reader {
+//
+//    public ArrayList readFile(String filename) {
+//
+//        try {
+//            File deckList = new File(filename);
+//
+//            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+//
+//            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+//
+//            org.w3c.dom.Document document = documentBuilder.parse(new File("DeckList.xml"));
+//
+//            // normalise text representation:
+//            document.getDocumentElement().normalize();
+//            System.out.println("Root: " + document.getDocumentElement().getNodeName());
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//}
 
 
 class CSVReader implements Reader {
 
-    public void readFile(String filename) {
-//        try {
-//            br = new BufferedReader(new FileReader(csvFile));
-//            while ((line = br.readLine()) != null) {
-//
-//                String[] tempFd = line.split(sc);
-//
-//                value = Integer.parseInt(tempFd[0]);
-//
-//                fd = new FolderData(value, tempFd[1]);
-//
-//                folderData.add(lineNumber, fd);
-//
-//                lineNumber++;
-//            }
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+    public CSVReader() {
 
+    }
+
+    public ArrayList readFile(String fileName) {
+
+        ArrayList deckList = new ArrayList();
+
+        String line = "";
+        int lineNumber = 0;
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            while ((line = br.readLine()) != null) {
+
+                deckList.add(lineNumber, line);
+
+                lineNumber++;
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return deckList;
 
     }
 
