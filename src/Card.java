@@ -7,18 +7,26 @@
 
 public class Card {
 
-    private String name;
-    private double hardness;
-    private double specificGravity;
-    private int cleavage;
-    private int abundance;
-    private int econValue;
-    private boolean wasPlayed = false;
-
+    private String name = "";
+    private double hardness = 0;
+    private double specificGravity = 0;
+    private int cleavage = 0;
+    private String cleavageType = "";
+    private int abundance = 0;
+    private String abundanceType = "";
+    private int econValue = 0;
+    private String econValueType = "";
+    private boolean Played = false;
+    private boolean superTrumpCard = false;
 
     public Card() {
 
     }
+
+    public Card(String name) {
+        this.name = name;
+    }
+
 
     public Card(String name, double hardness, double specificGravity, int cleavage, int abundance, int econValue) {
         this.name = name;
@@ -27,6 +35,107 @@ public class Card {
         this.cleavage = cleavage;
         this.abundance = abundance;
         this.econValue = econValue;
+
+        switch (cleavage) {
+            case 0:
+                this.cleavageType = "none";
+                break;
+            case 1:
+                this.cleavageType = "poor/none";
+                break;
+            case 2:
+                this.cleavageType = "1 poor";
+                break;
+            case 3:
+                this.cleavageType = "2 poor";
+                break;
+            case 4:
+                this.cleavageType = "1 good";
+                break;
+            case 5:
+                this.cleavageType = "1 good, 1 poor";
+                break;
+            case 6:
+                this.cleavageType = "2 good";
+                break;
+            case 7:
+                this.cleavageType = "3 good";
+                break;
+            case 8:
+                this.cleavageType = "1 perfect";
+                break;
+            case 9:
+                this.cleavageType = "1 perfect, 1 good";
+                break;
+            case 10:
+                this.cleavageType = "1 perfect, 2 good";
+                break;
+            case 11:
+                this.cleavageType = "2 perfect, 1 good";
+                break;
+            case 12:
+                this.cleavageType = "3 perfect";
+                break;
+            case 13:
+                this.cleavageType = "4 perfect";
+                break;
+            case 14:
+                this.cleavageType = "6 perfect";
+                break;
+        }
+
+        switch (abundance) {
+            case 0:
+                this.abundanceType = "ultratrace";
+                break;
+            case 1:
+                this.abundanceType = "trace";
+                break;
+            case 2:
+                this.abundanceType = "low";
+                break;
+            case 3:
+                this.abundanceType = "moderate";
+                break;
+            case 4:
+                this.abundanceType = "high";
+                break;
+            case 5:
+                this.abundanceType = "very high";
+                break;
+        }
+
+        switch (econValue) {
+            case 0:
+                this.econValueType = "trivial";
+                break;
+            case 1:
+                this.econValueType = "low";
+                break;
+            case 2:
+                this.econValueType = "moderate";
+                break;
+            case 3:
+                this.econValueType = "high";
+                break;
+            case 4:
+                this.econValueType = "very high";
+                break;
+            case 5:
+                this.econValueType = "I'm rich!";
+                break;
+        }
+    }
+
+
+    public void displayCard() {
+        System.out.println("--------------|" + this.name + "|--------------");
+        System.out.println("- Hardness:  " + this.hardness);
+        System.out.println("- Specific Gravity:  " + this.specificGravity);
+        System.out.println("- Cleavage:  " + this.cleavageType);
+        System.out.println("- Crustal Abundance  " + this.abundanceType);
+        System.out.println("- Economic Value:  " + this.econValueType);
+        System.out.println("-----------------------------------------");
     }
 
 
@@ -78,12 +187,20 @@ public class Card {
         this.econValue = econValue;
     }
 
-    public boolean isWasPlayed() {
-        return wasPlayed;
+    public boolean wasPlayed() {
+        return Played;
     }
 
     public void setWasPlayed(boolean wasPlayed) {
-        this.wasPlayed = wasPlayed;
+        this.Played = wasPlayed;
+    }
+
+    public boolean isSuperTrumpCard() {
+        return superTrumpCard;
+    }
+
+    public void setSuperTrumpCard(boolean isSuperTrump) {
+        this.superTrumpCard = isSuperTrump;
     }
 
 }

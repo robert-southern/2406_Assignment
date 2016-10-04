@@ -48,4 +48,12 @@ public class Player {
     public void setTempName(String tempName) {
         this.tempName = tempName;
     }
+
+    public void giveCard(Card card) {
+        this.hand.add(card);
+    }
+
+    public ArrayList<Card> getHand() {
+        return hand;
+    }
 }

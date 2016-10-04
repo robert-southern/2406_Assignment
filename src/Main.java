@@ -79,11 +79,18 @@ public class Main {
 
         main.pauseTwoSeconds();
         System.out.println(" ");
-        System.out.println("Dealing cards...");
+        System.out.println("The cards are being dealt...");
         System.out.println(" ");
         main.pauseTwoSeconds();
 
+        System.out.println(" ");
+        System.out.println("YOUR CARDS >>");
+        System.out.println(" ");
+        game.showPlayerHand();
+        main.pauseTwoSeconds();
 
+        System.out.println(" ");
+        game.playRound();
 
 
 

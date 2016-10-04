@@ -12,11 +12,11 @@ public class Menu {
 
         Scanner in = new Scanner(System.in);
 
-        System.out.println("------ Menu ------\n" +
+        System.out.println("------ Main Menu ------\n" +
                 "1. Play\n" +
                 "2. Rules\n" +
                 "3. Exit");
-        System.out.println("------------------");
+        System.out.println("-----------------------");
 
         System.out.print("Enter menu item number: ");
         while (!in.hasNextInt()) {

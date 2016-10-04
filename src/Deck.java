@@ -6,6 +6,7 @@
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class Deck {
@@ -19,23 +20,26 @@ public class Deck {
 
     public void shuffleDeck() {
 
-        int i;
-        int n = deckList.size();
+        // Attempt at Fisher-Yates shuffle algorithm
 
-        for (i = 0; i < (n - 1); i++) {
+//        int i;
+//        int n = deckList.size();
+//
+//        for (i = 0; i < (n - 1); i++) {
+//
+//            Random rand = new Random();
+//
+//            int j = rand.nextInt(n - 1) + i;
+//
+//            Card iIndex = deckList.remove(i);
+//            Card jIndex = deckList.remove(j);
+//
+//            deckList.add(i, jIndex);
+//            deckList.add(j, iIndex);
+//
+//        }
 
-            Random rand = new Random();
-
-            int j = rand.nextInt(n - 1) + i;
-
-            Card iIndex = deckList.remove(i);
-            Card jIndex = deckList.remove(j);
-
-            deckList.add(i, jIndex);
-            deckList.add(j, iIndex);
-
-        }
-
+        Collections.shuffle(this.deckList);
     }
 
 

@@ -66,7 +66,6 @@ class CSVReader implements Reader {
         }
 
         return deckList;
-
     }
 
 }
