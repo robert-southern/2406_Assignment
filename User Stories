@@ -13,3 +13,6 @@ USER STORIES
 11. Player to the left of the dealer has turn.
 12. During AI turn, the card played is shown.
 13. During Human turn, the hand is shown, user is prompted to pick a card to play.
+14. Card played by human is shown again.
+15. Winner of round is shown.
+16. Winner of the game is shown.
