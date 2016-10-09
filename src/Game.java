@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Game {
@@ -7,6 +8,8 @@ public class Game {
     private Player[] players;
     private Deck gameDeck;
     private int firstPlayerIndex = 0;
+    private String winner = "";
+    private String roundWinner = "";
 
 
     public Game(int numberOfPlayers) {
@@ -27,21 +30,35 @@ public class Game {
         DeckBuilder deckBuilder = new DeckBuilder();
         this.gameDeck = deckBuilder.buildDeck(fileName);
         dealHands();
-
-
     }
+
 
     public void play() {
 
+        while(!this.gameIsOver) {
+            playRound();
+            System.out.println(" ");
+            System.out.println(this.roundWinner + " won the round!");
+        }
 
+        for (int i = 0; i < players.length; i++) {
+
+            if (players[i].getHand().size() == 0) {
+                this.gameIsOver = true;
+                this.winner = players[i].getName();
+            }
+        }
     }
 
 
     public void playRound() {
 
+        int playersLeft = numberOfPlayers;
         boolean roundOver = false;
         String trumpCategory = "";
+        int categoryIndex = 0;
         double categoryValue = 0;
+        String categoryValueName = "";
         double tempValue = 0;
 
             GameMenu gameMenu = new GameMenu();
@@ -59,82 +76,231 @@ public class Game {
                     String[] tempChoice = gameMenu.getCardChoice().split(",");
                     trumpCategory = tempChoice[1];
                     categoryValue = Double.parseDouble(tempChoice[2]);
-                    nextPlayerIndex++;
+                    categoryIndex = returnTrumpIndex(trumpCategory);
+
+                    for (int z = 0; z < players[nextPlayerIndex].getHand().size(); z++) {
+                        if (tempChoice[0].equals(players[nextPlayerIndex].getHand().get(z).getName())) {
+                            players[nextPlayerIndex].getHand().remove(z);
+                        }
+                    }
+
+                    if (firstPlayerIndex == 4) {
+                        nextPlayerIndex = 0;
+                    } else {
+                        nextPlayerIndex++;
+                    }
                 } else {
                     players[firstPlayerIndex].giveCard(gameDeck.getNextCard());
-                    nextPlayerIndex++;
+                    if (firstPlayerIndex == 4) {
+                        nextPlayerIndex = 0;
+                    } else {
+                        nextPlayerIndex++;
+                    }
                 }
 
             } else {
 
+
                 Card cardPlayed = pickRandCard(firstPlayerIndex);
+                while (cardPlayed.isSuperTrumpCard()) {
+                    cardPlayed = pickRandCard(firstPlayerIndex);
+                }
+
                 pauseTwoSeconds();
+                System.out.println(" ");
                 System.out.println("It's " + players[firstPlayerIndex].getName() + "'s turn!");
                 pauseTwoSeconds();
                 System.out.println(" ");
                 System.out.println(players[firstPlayerIndex].getName() + " played:");
                 cardPlayed.displayCard();
                 trumpCategory = pickCategory();
-                System.out.println(players[firstPlayerIndex].getName() + " picked " + trumpCategory + "!");
+                categoryIndex = returnTrumpIndex(trumpCategory);
                 categoryValue = returnTrumpValue(trumpCategory, cardPlayed);
-                nextPlayerIndex++;
+                System.out.println(players[firstPlayerIndex].getName() + " picked " + trumpCategory + " at "
+                + categoryValue+ ".");
+
+                for (int z = 0; z < players[nextPlayerIndex].getHand().size(); z++) {
+                    if (cardPlayed == players[nextPlayerIndex].getHand().get(z)) {
+                        players[nextPlayerIndex].getHand().remove(z);
+                    }
+                }
+
+                if (firstPlayerIndex == 4) {
+                    nextPlayerIndex = 0;
+                } else {
+                    nextPlayerIndex++;
+                }
             }
 
         while (!roundOver) {
 
             if (players[nextPlayerIndex].isHuman()) {
+
                 System.out.println(" ");
                 System.out.println("It's your turn!");
+                System.out.println(" ");
+                System.out.println("The trump is " + trumpCategory + " at " + categoryValue + ".");
                 System.out.println(" ");
                 System.out.println("YOUR CARDS >>");
                 showPlayerHand();
                 pauseTwoSeconds();
 
-                for (int j = 0; j < players[nextPlayerIndex].getHand().size(); j++) {
+                gameMenu.displayMenu(!canPlay(nextPlayerIndex, categoryIndex, categoryValue));
 
-                }
-
-                gameMenu.displayMenu(false);
                 if (gameMenu.isPlayCard()) {
                     String[] tempChoice = gameMenu.getCardChoice().split(",");
                     trumpCategory = tempChoice[1];
-                    tempValue = Double.parseDouble(tempChoice[2]);
-                    nextPlayerIndex++;
+                    categoryValue = Double.parseDouble(tempChoice[2]);
+
+                    for (int z = 0; z < players[nextPlayerIndex].getHand().size(); z++) {
+                        if (tempChoice[0].equals(players[nextPlayerIndex].getHand().get(z).getName())) {
+                            players[nextPlayerIndex].getHand().remove(z);
+                        }
+                    }
+
+                    if (nextPlayerIndex == 4) {
+                        nextPlayerIndex = 0;
+                    } else {
+                        nextPlayerIndex++;
+                    }
                 } else {
-                    players[firstPlayerIndex].giveCard(gameDeck.getNextCard());
-                    nextPlayerIndex++;
+                    players[nextPlayerIndex].setCanPlay(false);
+                    players[nextPlayerIndex].giveCard(gameDeck.getNextCard());
+                    if (nextPlayerIndex == 4) {
+                        nextPlayerIndex = 0;
+                    } else {
+                        nextPlayerIndex++;
+                    }
                 }
 
             } else {
 
-                Card cardPlayed = pickRandCard(firstPlayerIndex);
-                pauseTwoSeconds();
-                System.out.println("It's " + players[firstPlayerIndex].getName() + "'s turn!");
-                pauseTwoSeconds();
-                System.out.println(" ");
-                System.out.println(players[firstPlayerIndex].getName() + " played:");
-                cardPlayed.displayCard();
-                trumpCategory = pickCategory();
-                categoryValue = returnTrumpValue(trumpCategory, cardPlayed);
-                nextPlayerIndex++;
+                if (canPlay(nextPlayerIndex, categoryIndex, categoryValue)) {
+
+                    Card cardPlayed = pickRandCard(nextPlayerIndex, categoryIndex, categoryValue);
+                    pauseTwoSeconds();
+                    System.out.println(" ");
+                    System.out.println("It's " + players[nextPlayerIndex].getName() + "'s turn!");
+                    pauseTwoSeconds();
+                    System.out.println(" ");
+                    System.out.println("The trump is " + trumpCategory + " at " + categoryValue + ".");
+                    System.out.println(" ");
+                    System.out.println(players[nextPlayerIndex].getName() + " played:");
+                    cardPlayed.displayCard();
+
+                    for (int z = 0; z < players[nextPlayerIndex].getHand().size(); z++) {
+                        if (cardPlayed == players[nextPlayerIndex].getHand().get(z)) {
+                            players[nextPlayerIndex].getHand().remove(z);
+                        }
+                    }
+
+                    categoryValue = returnTrumpValue(trumpCategory, cardPlayed);
+                    if (nextPlayerIndex == 4) {
+                        nextPlayerIndex = 0;
+                    } else {
+                        nextPlayerIndex++;
+                    }
+
+                } else {
+                    players[nextPlayerIndex].setCanPlay(false);
+                    players[nextPlayerIndex].giveCard(gameDeck.getNextCard());
+                    pauseTwoSeconds();
+                    System.out.println(" ");
+                    System.out.println(players[nextPlayerIndex].getName() + " has passed!");
+                    if (nextPlayerIndex == 4) {
+                        nextPlayerIndex = 0;
+                    } else {
+                        nextPlayerIndex++;
+                    }
+                }
             }
 
+            for (int x = 0; x < numberOfPlayers; x++) {
+                if (!players[x].isCanPlay()) {
+                    playersLeft--;
+                }
+            }
 
-
-
-
+            if (playersLeft == 1) {
+                for (int k = 0; k < numberOfPlayers; k++) {
+                    if (players[k].isCanPlay()) {
+                        this.roundWinner = players[k].getName();
+                        firstPlayerIndex = k;
+                        roundOver = true;
+                    }
+                }
+            }
         }
+    }
 
+    public boolean canPlay(int playerIndex, int trumpIndex, double currentTrumpValue) {
 
+        boolean canPlay = false;
+
+        for (int i = 0; i < players[playerIndex].getHand().size(); i++) {
+
+            if (!players[playerIndex].getHand().get(i).isSuperTrumpCard()) {
+                if (currentTrumpValue <= (players[playerIndex].getHand().get(i).getValues()[trumpIndex])) {
+                    canPlay = true;
+                    break;
+                }
+            }
+        }
+        return canPlay;
     }
 
 
-    public Card pickRandCard(int index) {
+    public int returnTrumpIndex(String trumpCategory) {
 
-        int randNum = new Random().nextInt(players[index].getHand().size());
+        int trumpIndex = 0;
 
-        return players[index].getHand().get(randNum);
+        switch (trumpCategory) {
+            case "Hardness":
+                trumpIndex = 0;
+                break;
+            case "Specific Gravity":
+                trumpIndex = 1;
+                break;
+            case "Cleavage":
+                trumpIndex = 2;
+                break;
+            case "Crustal Abundance":
+                trumpIndex = 3;
+                break;
+            case "Economic Value":
+                trumpIndex = 4;
+                break;
+        }
+        return trumpIndex;
     }
+
+
+    public Card pickRandCard(int playerIndex) {
+
+        int randNum = new Random().nextInt(players[playerIndex].getHand().size());
+
+        return players[playerIndex].getHand().get(randNum);
+    }
+
+    public Card pickRandCard(int playerIndex, int trumpIndex, double trumpValue) {
+
+        ArrayList<Card> tempValidCards = new ArrayList();
+
+        for (int i = 0; i < players[playerIndex].getHand().size(); i++) {
+
+            if (!players[playerIndex].getHand().get(i).isSuperTrumpCard()) {
+                if (players[playerIndex].getHand().get(i).getValues()[trumpIndex] >= trumpValue) {
+
+                    tempValidCards.add(players[playerIndex].getHand().get(i));
+                }
+            }
+        }
+        int randNum = new Random().nextInt(tempValidCards.size());
+
+        return tempValidCards.get(randNum);
+
+    }
+
 
     public String pickCategory() {
 
@@ -285,6 +451,10 @@ public class Game {
         return players;
     }
 
+    public String getWinner() {
+        return winner;
+    }
+
     public void pauseTwoSeconds() {
 
         try {
@@ -293,9 +463,5 @@ public class Game {
             Thread.currentThread().interrupt();
         }
     }
-
-
-
-
 
 }

@@ -5,11 +5,15 @@
  */
 
 
+import java.util.DoubleSummaryStatistics;
+
 public class Card {
 
     private String name = "";
     private double hardness = 0;
+    private String hardnessString = "";
     private double specificGravity = 0;
+    private String specificGravityString = "";
     private int cleavage = 0;
     private String cleavageType = "";
     private int abundance = 0;
@@ -18,6 +22,7 @@ public class Card {
     private String econValueType = "";
     private boolean Played = false;
     private boolean superTrumpCard = false;
+    private double[] values;
 
     public Card() {
 
@@ -35,6 +40,16 @@ public class Card {
         this.cleavage = cleavage;
         this.abundance = abundance;
         this.econValue = econValue;
+
+        this.hardnessString = Double.toString(hardness);
+        this.specificGravityString = Double.toString(specificGravity);
+
+        this.values = new double[5];
+        this.values[0] = hardness;
+        this.values[1] = specificGravity;
+        this.values[2] = cleavage;
+        this.values[3] = abundance;
+        this.values[4] = econValue;
 
         switch (cleavage) {
             case 0:
@@ -203,4 +218,19 @@ public class Card {
         this.superTrumpCard = isSuperTrump;
     }
 
+    public double[] getValues() {
+        return values;
+    }
+
+    public String getCleavageType() {
+        return cleavageType;
+    }
+
+    public String getAbundanceType() {
+        return abundanceType;
+    }
+
+    public String getEconValueType() {
+        return econValueType;
+    }
 }

@@ -20,6 +20,7 @@ public class GameMenu {
                     "2. Pass turn\n" +
                     "3. Quit game");
             System.out.println("----------------------");
+            this.playCard = false;
 
         } else {
             System.out.println("-------- Play --------\n" +
@@ -30,7 +31,7 @@ public class GameMenu {
         }
 
         System.out.print("Enter menu item number: ");
-        while (!in.hasNextInt() || ((in.nextInt() == 1) && (cannotPlay))) {
+        while (!in.hasNextInt()) {
             System.out.println("Invalid Input! Pick an option from the list using the corresponding integer.");
             System.out.print("Enter menu item number: ");
             in.next();
@@ -40,10 +41,15 @@ public class GameMenu {
 
         switch (userChoice) {
             case 1:
-                System.out.print("Choose your card ([name],[category],[value]): ");
-                this.cardChoice = in.nextLine();
-                this.playCard = true;
-                this.passTurn = false;
+                if (cannotPlay) {
+                    this.playCard = false;
+                    System.out.println("You passed!");
+                } else {
+                    System.out.print("Choose your card ([name],[category],[value]): ");
+                    this.cardChoice = in.next();
+                    this.playCard = true;
+                    this.passTurn = false;
+                }
                 break;
             case 2:
                 System.out.println(" ");

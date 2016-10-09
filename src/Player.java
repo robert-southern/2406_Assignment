@@ -7,6 +7,7 @@ public class Player {
     private String name = "";
     private String tempName = "";
     private ArrayList<Card> hand = new ArrayList();
+    boolean canPlay = true;
 
     public Player() {
 
@@ -55,5 +56,14 @@ public class Player {
 
     public ArrayList<Card> getHand() {
         return hand;
+    }
+
+
+    public boolean isCanPlay() {
+        return canPlay;
+    }
+
+    public void setCanPlay(boolean canPlay) {
+        this.canPlay = canPlay;
     }
 }
